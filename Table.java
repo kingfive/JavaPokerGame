@@ -3,6 +3,8 @@ import javax.swing.*;
 import java.io.*;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Table extends JFrame{
   String Filename;
@@ -12,7 +14,7 @@ public class Table extends JFrame{
   
   public Table(){
     super("Poker Games");
-
+    
     JMenu filemenu = new JMenu("File");
     JMenu helpmenu = new JMenu("Help");
     JMenuBar bar = new JMenuBar();
@@ -26,10 +28,24 @@ public class Table extends JFrame{
     
     createCardBack_Top(350, 0);
     createCardBack_LeftAndRight(10, 100);
-    createCardBack_LeftAndRight(this.getWidth()-60, 100);
+    createCardBack_LeftAndRight(this.getWidth()-100, 100);
     createMyCard(200, this.getHeight()-100);
+
+    CardButtonHandler cbh = new CardButtonHandler();
+    for (int i=0; i<myCardButton.length; i++) {
+      myCardButton[i].addActionListener(cbh);
+    }
   }
-  
+
+  private class CardButtonHandler implements ActionListener {
+    public void actionPerformed(ActionEvent event) {
+        JButton jb = new JButton();
+        jb = (JButton)event.getSource();
+        System.out.println(jb.getX());
+        ((JButton)event.getSource()).setLocation(jb.getX(), 400-10);
+    }
+  }
+
   public void loadFile(String imageName){
     Filename=imageName;//設定檔名
     try{
@@ -55,21 +71,19 @@ public class Table extends JFrame{
     for(int i=0; i<13; i++){
     JLabel cardBack = new JLabel(new ImageIcon(image));//把Image放進label裡
     this.add(cardBack);
-    cardBack.setBounds(x, y+(i*20), 50, 70);
-    }
+    cardBack.setBounds(x, y+(i*20), 70, 50);
+  }
   }
   
   public void createMyCard(int x, int y){
     String[] myCard = new String[]{"sa.png", "s2.png", "s3.png", "s4.png", "s5.png", "s6.png", "s7.png",
       "s8.png", "s9.png", "s10.png", "sj.png", "sq.png", "sk.png"};
-    for(int i=0; i<13; i++){
+      for(int i=0; i<13; i++){
       loadFile(myCard[i]);
       myCardButton[i] = new JButton(new ImageIcon(image));
       this.add(myCardButton[i]);
       myCardButton[i].setBounds(x+(i*50), y, 50, 70);
     }
   }
-
-
 
 }
