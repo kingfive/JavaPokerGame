@@ -1,7 +1,25 @@
-import javax.swing.JButton;
+import javax.swing.*;
 
 public class MyCard extends JButton{
-  String[] myCardPicture = new String[] { "sa.png", "s2.png", "s3.png", "s4.png", "s5.png", "s6.png", "s7.png", "s8.png",
-      "s9.png", "s10.png", "sj.png", "sq.png", "sk.png" };
+  private int clickedCount = 0;
 
+  MyCard(){
+    super();
+  }
+  
+  MyCard(ImageIcon image){
+    super(image);
+  }
+
+  public void addClickedCount(){
+    clickedCount++;
+  }
+
+  public int ClickedCount(){
+    return clickedCount;
+  }
+
+  public void setClickedCount(int i) {
+    clickedCount = i;
+  }
 }

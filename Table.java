@@ -3,14 +3,13 @@ import javax.swing.*;
 import java.io.*;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import java.awt.event.*;
 
 public class Table extends JFrame{
   String Filename;
   BufferedImage image;
   JPanel cardBackJPanel_top;
-  JButton[] myCardButton = new JButton[13];
+  MyCard[] myCardButton = new MyCard[13];
   
   public Table(){
     super("Poker Games");
@@ -35,15 +34,26 @@ public class Table extends JFrame{
     for (int i=0; i<myCardButton.length; i++) {
       myCardButton[i].addActionListener(cbh);
     }
+
   }
 
-  private class CardButtonHandler implements ActionListener {
+  private class CardButtonHandler implements ActionListener{
     public void actionPerformed(ActionEvent event) {
-        JButton jb = new JButton();
-        jb = (JButton)event.getSource();
-        System.out.println(jb.getX());
-        ((JButton)event.getSource()).setLocation(jb.getX(), 400-10);
+      // JButton thisCard = new JButton();
+      // thisCard = ((JButton) event.getSource());
+      if ( ((MyCard) event.getSource()).ClickedCount() == 0 ) {
+        ((MyCard)event.getSource()).setLocation( ((MyCard)event.getSource()).getX(), 400-10);
+        ((MyCard)event.getSource()).addClickedCount();
+      }
+      else if(((MyCard) event.getSource()).ClickedCount() == 1){
+        for (int i = 0; i < myCardButton.length; i++) {
+          myCardButton[i].setLocation(myCardButton[i].getX(), 400);
+          myCardButton[i].setClickedCount(0);
+        }
+        ((MyCard) event.getSource()).setLocation(((MyCard) event.getSource()).getX(), 200);
+      }
     }
+
   }
 
   public void loadFile(String imageName){
@@ -74,13 +84,13 @@ public class Table extends JFrame{
     cardBack.setBounds(x, y+(i*20), 70, 50);
   }
   }
-  
+    
   public void createMyCard(int x, int y){
-    String[] myCard = new String[]{"sa.png", "s2.png", "s3.png", "s4.png", "s5.png", "s6.png", "s7.png",
+    String[] myCardPic = new String[]{"sa.png", "s2.png", "s3.png", "s4.png", "s5.png", "s6.png", "s7.png",
       "s8.png", "s9.png", "s10.png", "sj.png", "sq.png", "sk.png"};
       for(int i=0; i<13; i++){
-      loadFile(myCard[i]);
-      myCardButton[i] = new JButton(new ImageIcon(image));
+      loadFile(myCardPic[i]);
+      myCardButton[i] = new MyCard(new ImageIcon(image));
       this.add(myCardButton[i]);
       myCardButton[i].setBounds(x+(i*50), y, 50, 70);
     }
